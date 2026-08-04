@@ -1,6 +1,9 @@
+server:
+  port: 8080
+
 spring:
   application:
-    name: logistics
+    name: auth_service
   #  profiles:
   #    active: dev
   datasource:
@@ -68,3 +71,4 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+

@@ -21,7 +21,6 @@ public class AuthAccounts extends BaseUpdatableEntity {
   @Column( name = "user_id", nullable = false, updatable = false)
   private UUID id;
 
-
   @Column(nullable = false, unique = true, length = 10)
   private String username;
 
@@ -61,5 +60,10 @@ public class AuthAccounts extends BaseUpdatableEntity {
 
   public void disable() {
     this.accountStatus = AccountStatus.DISABLED;
+  }
+
+  public boolean isEnabled() {
+    return this.accountStatus == AccountStatus.ACTIVE
+        && this.getDeletedAt() == null;
   }
 }

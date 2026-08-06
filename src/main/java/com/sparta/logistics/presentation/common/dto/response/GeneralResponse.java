@@ -13,6 +13,10 @@ public record GeneralResponse<T>(
                 .body(fromData(responseCode, data));
     }
 
+    public static <T> GeneralResponse<T> of(GeneralResponseCode responseCode, T data) {
+        return new GeneralResponse<T>(responseCode.getMessage(), data);
+    }
+
     private static <T> GeneralResponse<T> fromData(ApiResponseCode responseCode, T data) {
         return new GeneralResponse<>(responseCode.getMessage(), data);
     }

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "user-service")
 public interface UserServiceClient {
-
   @PostMapping("/internal/v1/users/signup")
   void createPendingUser(
       @RequestBody CreatePendingUserRequest request

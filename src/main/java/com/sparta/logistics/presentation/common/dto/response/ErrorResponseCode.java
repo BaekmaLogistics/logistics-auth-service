@@ -14,8 +14,9 @@ public enum ErrorResponseCode implements ApiResponseCode {
 
     DUPLICATE_USERNAME(HttpStatus.CONFLICT, "AUTH_0001", "이미 사용중인 아이디입니다"),
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "AUTH_0002", "아이디 또는 비밀번호가 올바르지 않습니다."),
-    ACCOUNT_NOT_APPROVED(HttpStatus.FORBIDDEN, "AUTH_0003", "승인되지 않은 계정입니다." );
-
+    ACCOUNT_NOT_APPROVED(HttpStatus.FORBIDDEN, "AUTH_0003", "승인되지 않은 계정입니다." ),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_0004", "유효하지 않은 Refresh Token입니다."),
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_0005", "만료된 Refresh Token입니다.");
 
 
     private final HttpStatus status;

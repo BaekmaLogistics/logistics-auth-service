@@ -16,11 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthAccounts extends BaseUpdatableEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  @Column( name = "user_id", nullable = false, updatable = false)
-  private UUID id;
-
   @Column(nullable = false, unique = true, length = 10)
   private String username;
 

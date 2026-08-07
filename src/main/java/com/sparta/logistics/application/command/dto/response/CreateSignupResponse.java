@@ -1,4 +1,4 @@
-package com.sparta.logistics.application.command.dto;
+package com.sparta.logistics.application.command.dto.response;
 
 import com.sparta.logistics.domain.entity.AuthAccounts;
 import com.sparta.logistics.domain.model.AccountStatus;

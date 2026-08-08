@@ -12,7 +12,7 @@ import java.time.Duration;
 public class RefreshTokenCookieManager {
 
   private static final String COOKIE_NAME = "refreshToken";
-  private static final String COOKIE_PATH = "/api/v1/auth/reissue";
+  private static final String COOKIE_PATH = "/api/v1/auth";
 
 
   public ResponseCookie create(String refreshToken, long expiresInSeconds) {
@@ -21,6 +21,15 @@ public class RefreshTokenCookieManager {
         .secure(false)
         .path(COOKIE_PATH)
         .maxAge(Duration.ofSeconds(expiresInSeconds))
+        .build();
+  }
+
+  public ResponseCookie delete() {
+    return ResponseCookie.from(COOKIE_NAME, "")
+        .httpOnly(true)
+        .secure(false)
+        .path(COOKIE_PATH)
+        .maxAge(Duration.ZERO)
         .build();
   }
 }

@@ -1,11 +1,9 @@
 package com.sparta.logistics.application.command.service;
 
-import com.sparta.logistics.application.command.dto.CreateSignupCommand;
-import com.sparta.logistics.application.command.dto.IssuedTokens;
-import com.sparta.logistics.application.command.dto.LoginCommand;
-import com.sparta.logistics.application.command.dto.ReissueCommand;
+import com.sparta.logistics.application.command.dto.*;
 import com.sparta.logistics.application.command.dto.response.CreateSignupResponse;
 import com.sparta.logistics.application.command.usecase.LoginUseCase;
+import com.sparta.logistics.application.command.usecase.LogoutUseCase;
 import com.sparta.logistics.application.command.usecase.ReissueUseCase;
 import com.sparta.logistics.application.command.usecase.SignupUseCase;
 import com.sparta.logistics.domain.entity.AuthAccounts;
@@ -33,7 +31,11 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AuthCommandService implements SignupUseCase, LoginUseCase, ReissueUseCase {
+public class AuthCommandService implements
+    SignupUseCase,
+    LoginUseCase,
+    ReissueUseCase,
+    LogoutUseCase {
 
   private final AuthAccountsRepository authAccountsRepository;
   private final PasswordEncoder passwordEncoder;
@@ -77,7 +79,6 @@ public class AuthCommandService implements SignupUseCase, LoginUseCase, ReissueU
     return CreateSignupResponse.from(savedAuthAccount);
   }
 
-
   //로그인
   @Override
   public IssuedTokens login(LoginCommand command) {
@@ -114,7 +115,7 @@ public class AuthCommandService implements SignupUseCase, LoginUseCase, ReissueU
     return tokens;
   }
 
-  //Token 재발급
+  // Token 재발급
   @Override
   public IssuedTokens reissue(ReissueCommand command) {
     String refreshToken = command.refreshToken();
@@ -154,6 +155,25 @@ public class AuthCommandService implements SignupUseCase, LoginUseCase, ReissueU
     );
 
     return newTokens;
+  }
+
+  // 로그아웃
+  @Override
+  public void logout(LogoutCommand command) {
+    String refreshToken = command.refreshToken();
+
+    // JWT 검증 후 userId
+    UUID userId = jwtTokenProvider.parseRefreshToken(refreshToken);
+
+    String findToken = refreshTokenRepository.findByUserId(userId)
+        .orElseThrow(() -> new ApiException(ErrorResponseCode.INVALID_REFRESH_TOKEN));
+
+    if (!findToken.equals(refreshToken)) {
+      throw new ApiException(ErrorResponseCode.INVALID_REFRESH_TOKEN);
+    }
+
+    // Redis에서 RefreshToken 폐기
+    refreshTokenRepository.deleteByUserId(userId);
   }
 
   private void saveRefreshToken(UUID userId, String refreshToken, long expiresIn) {

@@ -35,13 +35,14 @@ public class SecurityConfig {
             authorize
 
                 /*
-                * 회원가입, 로그인, AccessToken 재발급 허용
-                */
+                 * 회원가입, 로그인, AccessToken 재발급 허용
+                 */
                 .requestMatchers(
                     HttpMethod.POST,
                     "/api/v1/auth/signup",
                     "/api/v1/auth/login",
-                    "/api/v1/auth/reissue"
+                    "/api/v1/auth/reissue",
+                    "/api/v1/auth/logout"
                 ).permitAll()
                 .anyRequest().authenticated()
         );

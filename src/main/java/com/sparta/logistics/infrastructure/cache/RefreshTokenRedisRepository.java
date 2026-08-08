@@ -39,6 +39,11 @@ public class RefreshTokenRedisRepository implements RefreshTokenRepository {
     );
   }
 
+  @Override
+  public void deleteByUserId(UUID userId) {
+    redisTemplate.delete(createKey(userId));
+  }
+
   private String createKey(UUID userId) {
     return serviceName
         + "::"

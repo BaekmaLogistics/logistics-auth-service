@@ -13,7 +13,7 @@ import com.sparta.logistics.infrastructure.security.cookie.RefreshTokenCookieMan
 import com.sparta.logistics.presentation.command.request.LoginRequest;
 import com.sparta.logistics.presentation.command.request.SignupRequest;
 import com.sparta.logistics.presentation.common.dto.response.GeneralResponse;
-import com.sparta.logistics.presentation.common.dto.response.GeneralResponseCode;
+import com.sparta.logistics.common.code.GeneralResponseCode;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

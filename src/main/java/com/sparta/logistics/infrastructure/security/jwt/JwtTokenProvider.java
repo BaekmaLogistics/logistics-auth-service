@@ -1,17 +1,15 @@
 package com.sparta.logistics.infrastructure.security.jwt;
 
 import com.sparta.logistics.application.command.dto.IssuedTokens;
-import com.sparta.logistics.presentation.common.dto.response.ErrorResponseCode;
-import com.sparta.logistics.presentation.common.exception.ApiException;
+import com.sparta.logistics.common.code.ErrorResponseCode;
+import com.sparta.logistics.common.exception.ApiException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;

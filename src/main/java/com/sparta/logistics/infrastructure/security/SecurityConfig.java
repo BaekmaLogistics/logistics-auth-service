@@ -44,8 +44,15 @@ public class SecurityConfig {
                     "/api/v1/auth/reissue",
                     "/api/v1/auth/logout"
                 ).permitAll()
+
+                .requestMatchers(
+                    HttpMethod.PATCH,
+                    "/internal/api/v1/auth/accounts/{userId}/activate"
+                ).permitAll()
+
                 .anyRequest().authenticated()
         );
+
     return http.build();
   }
 

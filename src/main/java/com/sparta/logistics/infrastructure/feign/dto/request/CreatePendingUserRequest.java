@@ -12,5 +12,5 @@ public record CreatePendingUserRequest(
     RequestedRole requestedRole,
     UUID hubId,
     UUID companyId,
-    DeliveryManagerType deliveryManagerType) {
+    DeliveryManagerType requestedDeliveryType) {
 }

@@ -1,6 +1,8 @@
 package com.sparta.logistics.presentation.common.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sparta.logistics.common.code.ApiResponseCode;
+import com.sparta.logistics.common.code.GeneralResponseCode;
 import org.springframework.http.ResponseEntity;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -2,10 +2,7 @@ package com.sparta.logistics.application.command.service;
 
 import com.sparta.logistics.application.command.dto.*;
 import com.sparta.logistics.application.command.dto.response.CreateSignupResponse;
-import com.sparta.logistics.application.command.usecase.LoginUseCase;
-import com.sparta.logistics.application.command.usecase.LogoutUseCase;
-import com.sparta.logistics.application.command.usecase.ReissueUseCase;
-import com.sparta.logistics.application.command.usecase.SignupUseCase;
+import com.sparta.logistics.application.command.usecase.*;
 import com.sparta.logistics.domain.entity.AuthAccounts;
 import com.sparta.logistics.domain.repository.AuthAccountsRepository;
 import com.sparta.logistics.domain.repository.RefreshTokenRepository;
@@ -13,8 +10,8 @@ import com.sparta.logistics.infrastructure.feign.client.user.UserServiceClient;
 import com.sparta.logistics.infrastructure.feign.dto.request.CreatePendingUserRequest;
 import com.sparta.logistics.infrastructure.security.CustomUserDetails;
 import com.sparta.logistics.infrastructure.security.jwt.JwtTokenProvider;
-import com.sparta.logistics.presentation.common.dto.response.ErrorResponseCode;
-import com.sparta.logistics.presentation.common.exception.ApiException;
+import com.sparta.logistics.common.code.ErrorResponseCode;
+import com.sparta.logistics.common.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,7 +32,8 @@ public class AuthCommandService implements
     SignupUseCase,
     LoginUseCase,
     ReissueUseCase,
-    LogoutUseCase {
+    LogoutUseCase,
+    ActivateAuthAccountUseCase {
 
   private final AuthAccountsRepository authAccountsRepository;
   private final PasswordEncoder passwordEncoder;
@@ -188,5 +186,17 @@ public class AuthCommandService implements
     if (authAccountsRepository.existsByUsername(username)) {
       throw new ApiException(ErrorResponseCode.DUPLICATE_USERNAME);
     }
+  }
+
+
+  @Override
+  public void activateAccount(ActivateAuthAccountCommand command) {
+
+    AuthAccounts accounts = authAccountsRepository.findByIdAndDeletedAtIsNull(command.userId())
+        .orElseThrow(() ->
+            new ApiException(ErrorResponseCode.AUTH_ACCOUNT_NOT_FOUND));
+
+    // 계정 활성화
+    accounts.activate(command.role());
   }
 }

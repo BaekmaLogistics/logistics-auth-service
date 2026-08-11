@@ -11,4 +11,6 @@ public interface AuthAccountsRepository extends JpaRepository<AuthAccounts, UUID
   boolean existsByUsername(String username);
 
   Optional<AuthAccounts> findByUsername(String username);
+
+  Optional<AuthAccounts> findByIdAndDeletedAtIsNull(UUID uuid);
 }

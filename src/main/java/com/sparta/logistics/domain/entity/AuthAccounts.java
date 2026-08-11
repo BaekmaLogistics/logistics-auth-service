@@ -3,12 +3,12 @@ package com.sparta.logistics.domain.entity;
 import com.sparta.logistics.domain.model.AccountStatus;
 import com.sparta.logistics.domain.model.Role;
 import com.sparta.logistics.infrastructure.persistence.jpa.entity.BaseUpdatableEntity;
+import com.sparta.logistics.common.code.ErrorResponseCode;
+import com.sparta.logistics.common.exception.ApiException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -39,6 +39,26 @@ public class AuthAccounts extends BaseUpdatableEntity {
 
   public static AuthAccounts createPending(String username, String password) {
     return new AuthAccounts(username, password);
+  }
+
+  public void activate(Role role) {
+
+    if (role == null) {
+      throw new ApiException(
+          ErrorResponseCode.ACCOUNT_ACTIVATION_NOT_ALLOWED
+      );
+    }
+
+    // PENDING 상태에서만 활성화 가능
+    if (this.accountStatus != AccountStatus.PENDING) {
+      throw new ApiException(
+          ErrorResponseCode.ACCOUNT_ACTIVATION_NOT_ALLOWED
+      );
+    }
+
+    this.role = role;
+    this.accountStatus = AccountStatus.ACTIVE;
+
   }
 
   public void changePassword(String encodePassword) {

@@ -1,0 +1,34 @@
+package com.sparta.logistics.presentation.command.controller;
+
+import com.sparta.logistics.application.command.usecase.ActivateAuthAccountUseCase;
+import com.sparta.logistics.presentation.command.request.ActivateAuthAccountRequest;
+import com.sparta.logistics.presentation.common.dto.response.GeneralResponse;
+import com.sparta.logistics.common.code.GeneralResponseCode;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/internal/api/v1/auth/accounts")
+public class InternalAUthCommandController {
+
+  private final ActivateAuthAccountUseCase activateAuthAccountUseCase;
+
+  @PatchMapping("/{userId}/activate")
+  public ResponseEntity<GeneralResponse<Void>> activateAccount(
+      @PathVariable UUID userId,
+      @Valid @RequestBody ActivateAuthAccountRequest request
+  ) {
+
+    activateAuthAccountUseCase.activateAccount(request.toCommand(userId));
+
+    return GeneralResponse.toResponseEntity(
+        GeneralResponseCode.OK,
+        null
+    );
+  }
+}

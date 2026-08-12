@@ -8,6 +8,7 @@ group = 'com.sparta'
 version = '0.0.1-SNAPSHOT'
 description = 'auth-service'
 
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -44,6 +45,7 @@ dependencies {
 
     //Micrometer Tracing
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    implementation 'io.github.openfeign:feign-micrometer'
 
     //Zipkin
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
@@ -81,6 +83,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
+
 }
 
 tasks.named('test') {

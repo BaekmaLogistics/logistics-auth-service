@@ -21,7 +21,6 @@ public enum ErrorResponseCode implements ApiResponseCode {
     AUTH_ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_0008", "인증 계정을 찾을 수 없습니다."),
     ACCOUNT_REJECTION_NOT_ALLOWED(HttpStatus.CONFLICT, "AUTH_0009", "현재 상태에서는 인증 계정을 거절할 수 없습니다.");
 
-
     private final HttpStatus status;
     private final String errorCode;
     private final String message;

@@ -19,6 +19,7 @@ public record GeneralResponse<T>(
         return new GeneralResponse<T>(responseCode.getMessage(), data);
     }
 
+
     private static <T> GeneralResponse<T> fromData(ApiResponseCode responseCode, T data) {
         return new GeneralResponse<>(responseCode.getMessage(), data);
     }

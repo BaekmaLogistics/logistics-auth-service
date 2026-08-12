@@ -20,6 +20,22 @@ public class QueueConfig {
     @Value("${message.queue.notification}")
     private String queueNotification;
 
+    @Value("${message.queue.company}")
+    private String queueCompany;
+
+    @Value("${message.binding-key.notification.inventory-low}")
+    private String keyNotificationInventoryLow;
+    @Value("${message.binding-key.notification.order-created}")
+    private String keyNotificationOrderCreated;
+    @Value("${message.binding-key.notification.order-canceled}")
+    private String keyNotificationOrderCanceled;
+    @Value("${message.binding-key.notification.order-completed}")
+    private String keyNotificationOrderCompleted;
+    @Value("${message.binding-key.hub.route-changed}")
+    private String keyHubRouteChanged;
+    @Value("${message.binding-key.company.hub-deleted}")
+    private String keyCompanyHubDeleted;
+
     @Bean
     public TopicExchange exchange() { return new TopicExchange(exchange); }
 
@@ -30,5 +46,53 @@ public class QueueConfig {
     @Bean public Binding bindingDelivery() { return BindingBuilder.bind(queueDelivery()).to(exchange()).with(queueDelivery); }
     @Bean public Binding bindingHub() { return BindingBuilder.bind(queueHub()).to(exchange()).with(queueHub); }
     @Bean public Binding bindingNotification() { return BindingBuilder.bind(queueNotification()).to(exchange()).with(queueNotification); }
+    @Bean public Queue queueCompany() { return new Queue(queueCompany); }
 
+    // Hub -> Notification (재고 부족)
+    @Bean
+    public Binding bindingNotificationInventoryLow() {
+        return BindingBuilder.bind(queueNotification())
+                .to(exchange())
+                .with(keyNotificationInventoryLow);
+    }
+
+    // Order -> Notification (주문 생성)
+    @Bean
+    public Binding bindingNotificationOrderCreated() {
+        return BindingBuilder.bind(queueNotification())
+                .to(exchange())
+                .with(keyNotificationOrderCreated);
+    }
+
+    // Order -> Notification (주문 취소)
+    @Bean
+    public Binding bindingNotificationOrderCanceled() {
+        return BindingBuilder.bind(queueNotification())
+                .to(exchange())
+                .with(keyNotificationOrderCanceled);
+    }
+
+    // Order -> Notification (주문 완료)
+    @Bean
+    public Binding bindingNotificationOrderCompleted() {
+        return BindingBuilder.bind(queueNotification())
+                .to(exchange())
+                .with(keyNotificationOrderCompleted);
+    }
+
+    // Hub -> Hub (허브 경로 변경)
+    @Bean
+    public Binding bindingHubRouteChanged() {
+        return BindingBuilder.bind(queueHub())
+                .to(exchange())
+                .with(keyHubRouteChanged);
+    }
+
+    // Hub -> Company (허브 삭제)
+    @Bean
+    public Binding bindingCompanyHubDeleted() {
+        return BindingBuilder.bind(queueCompany())
+                .to(exchange())
+                .with(keyCompanyHubDeleted);
+    }
 }

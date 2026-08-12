@@ -18,7 +18,9 @@ public enum ErrorResponseCode implements ApiResponseCode {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_0004", "유효하지 않은 Refresh Token입니다."),
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_0005", "만료된 Refresh Token입니다."),
     ACCOUNT_ACTIVATION_NOT_ALLOWED(HttpStatus.CONFLICT, "AUTH_0007", "현재 상태에서는 인증 계정을 활성화할 수 없습니다."),
-    AUTH_ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_0008", "인증 계정을 찾을 수 없습니다.");
+    AUTH_ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_0008", "인증 계정을 찾을 수 없습니다."),
+    ACCOUNT_REJECTION_NOT_ALLOWED(HttpStatus.CONFLICT, "AUTH_0009", "현재 상태에서는 인증 계정을 거절할 수 없습니다.");
+
 
     private final HttpStatus status;
     private final String errorCode;

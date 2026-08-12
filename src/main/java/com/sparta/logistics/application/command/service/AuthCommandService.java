@@ -33,7 +33,9 @@ public class AuthCommandService implements
     LoginUseCase,
     ReissueUseCase,
     LogoutUseCase,
-    ActivateAuthAccountUseCase {
+    ActivateAuthAccountUseCase,
+    RejectAuthAccountUseCase
+{
 
   private final AuthAccountsRepository authAccountsRepository;
   private final PasswordEncoder passwordEncoder;
@@ -174,6 +176,37 @@ public class AuthCommandService implements
     refreshTokenRepository.deleteByUserId(userId);
   }
 
+  // 승인
+  @Override
+  public void activateAccount(ActivateAuthAccountCommand command) {
+
+    AuthAccounts accounts = findAccountById(command.userId());
+
+    // 계정 활성화
+    accounts.activate(command.role());
+  }
+
+
+  //거절
+  @Override
+  public void rejectAccount(RejectAuthAccountCommand command) {
+    AuthAccounts account = findAccountById(command.userId());
+
+    account.reject();
+  }
+
+  // 논리 삭제되지 않은
+  private AuthAccounts findAccountById(UUID userId) {
+    return authAccountsRepository
+        .findByIdAndDeletedAtIsNull(userId)
+        .orElseThrow(() ->
+            new ApiException(
+                ErrorResponseCode.AUTH_ACCOUNT_NOT_FOUND
+            )
+        );
+  }
+
+  // RefreshToken 저장
   private void saveRefreshToken(UUID userId, String refreshToken, long expiresIn) {
     refreshTokenRepository.save(
         userId,
@@ -182,21 +215,10 @@ public class AuthCommandService implements
     );
   }
 
+
   private void validateUsername(String username) {
     if (authAccountsRepository.existsByUsername(username)) {
       throw new ApiException(ErrorResponseCode.DUPLICATE_USERNAME);
     }
-  }
-
-
-  @Override
-  public void activateAccount(ActivateAuthAccountCommand command) {
-
-    AuthAccounts accounts = authAccountsRepository.findByIdAndDeletedAtIsNull(command.userId())
-        .orElseThrow(() ->
-            new ApiException(ErrorResponseCode.AUTH_ACCOUNT_NOT_FOUND));
-
-    // 계정 활성화
-    accounts.activate(command.role());
   }
 }

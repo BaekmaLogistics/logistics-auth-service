@@ -47,7 +47,8 @@ public class SecurityConfig {
 
                 .requestMatchers(
                     HttpMethod.PATCH,
-                    "/internal/api/v1/auth/accounts/{userId}/activate"
+                    "/internal/api/v1/auth/accounts/{userId}/activate",
+                    "/internal/api/v1/auth/accounts/{userId}/reject"
                 ).permitAll()
 
                 .anyRequest().authenticated()

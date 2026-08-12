@@ -1,6 +1,8 @@
 package com.sparta.logistics.presentation.common.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sparta.logistics.common.code.ApiResponseCode;
+import com.sparta.logistics.common.code.GeneralResponseCode;
 import org.springframework.http.ResponseEntity;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -12,6 +14,11 @@ public record GeneralResponse<T>(
         return ResponseEntity.status(responseCode.getStatus())
                 .body(fromData(responseCode, data));
     }
+
+    public static <T> GeneralResponse<T> of(GeneralResponseCode responseCode, T data) {
+        return new GeneralResponse<T>(responseCode.getMessage(), data);
+    }
+
 
     private static <T> GeneralResponse<T> fromData(ApiResponseCode responseCode, T data) {
         return new GeneralResponse<>(responseCode.getMessage(), data);

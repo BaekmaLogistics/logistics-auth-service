@@ -65,11 +65,17 @@ public class AuthAccounts extends BaseUpdatableEntity {
     this.password = encodePassword;
   }
 
-  public void approve() {
-    this.accountStatus = AccountStatus.ACTIVE;
-  }
-
+  //
   public void reject() {
+
+    // PENDING 상태에서만 가능
+    if (this.accountStatus != AccountStatus.PENDING) {
+      throw new ApiException(
+          ErrorResponseCode.ACCOUNT_REJECTION_NOT_ALLOWED
+      );
+    }
+
+    this.role = null;
     this.accountStatus = AccountStatus.REJECTED;
   }
 

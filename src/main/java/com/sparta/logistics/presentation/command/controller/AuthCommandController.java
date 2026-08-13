@@ -14,6 +14,7 @@ import com.sparta.logistics.presentation.command.request.LoginRequest;
 import com.sparta.logistics.presentation.command.request.SignupRequest;
 import com.sparta.logistics.presentation.common.dto.response.GeneralResponse;
 import com.sparta.logistics.common.code.GeneralResponseCode;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ public class AuthCommandController {
   private final LogoutUseCase logoutUseCase;
   private final RefreshTokenCookieManager refreshTokenCookieManager;
 
+  @SecurityRequirements
   @PostMapping("/signup")
   public ResponseEntity<GeneralResponse<CreateSignupResponse>> signup(
       @Valid @RequestBody SignupRequest request
@@ -44,6 +46,7 @@ public class AuthCommandController {
     );
   }
 
+  @SecurityRequirements
   @PostMapping("/login")
   public ResponseEntity<GeneralResponse<TokenResponse>> login(
       @Valid @RequestBody LoginRequest request
@@ -68,6 +71,7 @@ public class AuthCommandController {
         );
   }
 
+  @SecurityRequirements
   @PostMapping("/reissue")
   public ResponseEntity<GeneralResponse<TokenResponse>> reissue(
       @CookieValue("refreshToken") String refreshToken
@@ -93,6 +97,7 @@ public class AuthCommandController {
         );
   }
 
+  @SecurityRequirements
   @PostMapping("/logout")
   public ResponseEntity<GeneralResponse<Void>> logout(
       @CookieValue(name = "refreshToken") String refreshToken

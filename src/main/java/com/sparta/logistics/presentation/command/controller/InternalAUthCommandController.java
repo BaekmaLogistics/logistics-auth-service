@@ -6,6 +6,7 @@ import com.sparta.logistics.application.command.usecase.RejectAuthAccountUseCase
 import com.sparta.logistics.presentation.command.request.ActivateAuthAccountRequest;
 import com.sparta.logistics.presentation.common.dto.response.GeneralResponse;
 import com.sparta.logistics.common.code.GeneralResponseCode;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class InternalAUthCommandController {
   private final ActivateAuthAccountUseCase activateAuthAccountUseCase;
   private final RejectAuthAccountUseCase rejectAuthAccountUseCase;
 
+  @SecurityRequirements
   @PatchMapping("/{userId}/activate")
   public ResponseEntity<GeneralResponse<Void>> activateAccount(
       @PathVariable UUID userId,
@@ -35,7 +37,7 @@ public class InternalAUthCommandController {
     );
   }
 
-
+  @SecurityRequirements
   @PatchMapping("/{userId}/reject")
   public ResponseEntity<GeneralResponse<Void>> rejectAccount(
       @PathVariable UUID userId

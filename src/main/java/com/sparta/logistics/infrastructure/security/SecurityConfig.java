@@ -46,6 +46,13 @@ public class SecurityConfig {
                 ).permitAll()
 
                 .requestMatchers(
+                    "/api/api-docs",
+                    "/api/api-spec",
+                    "/api/my-docs",
+                    "/api/swagger-ui/**"
+                ).permitAll()
+
+                .requestMatchers(
                     HttpMethod.PATCH,
                     "/internal/api/v1/auth/accounts/{userId}/activate",
                     "/internal/api/v1/auth/accounts/{userId}/reject"

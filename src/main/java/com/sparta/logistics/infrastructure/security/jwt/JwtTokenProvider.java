@@ -4,12 +4,12 @@ import com.sparta.logistics.application.command.dto.IssuedTokens;
 import com.sparta.logistics.common.code.ErrorResponseCode;
 import com.sparta.logistics.common.exception.ApiException;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -30,7 +30,7 @@ public class JwtTokenProvider {
   public JwtTokenProvider(JwtProperties jwtProperties) {
     this.jwtProperties = jwtProperties;
     this.key = Keys.hmacShaKeyFor(
-        Decoders.BASE64.decode(jwtProperties.secretKey())
+        jwtProperties.secretKey().getBytes(StandardCharsets.UTF_8)
     );
     this.jwtParser = Jwts.parser()
         .verifyWith(key)
